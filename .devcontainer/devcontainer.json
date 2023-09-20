@@ -1,0 +1,44 @@
+// For format details, see https://aka.ms/devcontainer.json. For config options, see the
+// README at: https://github.com/devcontainers/templates/tree/main/src/universal
+{
+	"name": "Default Linux Universal",
+	// Or use a Dockerfile or Docker Compose file. More info: https://containers.dev/guide/dockerfile
+	//"image": "mcr.microsoft.com/devcontainers/universal:2-linux",
+	"build": { "dockerfile": "dev.dockerfile" },
+	// Features to add to the dev container. More info: https://containers.dev/features.
+	"features": {},
+	// Use 'forwardPorts' to make a list of ports inside the container available locally.
+	// "forwardPorts": [],
+
+	// Use 'postCreateCommand' to run commands after the container is created.
+	"postCreateCommand": [
+		//"python -m pip install -r /workspaces/nimloth/backend/requirements.txt"
+	],
+
+	// Configure tool-specific properties.
+	"customizations": {
+		"vscode": {
+			"extensions": [
+				// Python
+				"ms-python.python",
+				"ms-python.vscode-pylance",
+				"ms-python.isort",
+				// Git
+				"mhutchie.git-graph",
+				"donjayamanne.githistory",
+				"github.vscode-github-actions",
+				// Other functionality
+				"ms-azuretools.vscode-docker",
+				"dbaeumer.vscode-eslint",
+				"esbenp.prettier-vscode",
+				"ionutvmi.path-autocomplete",
+				"fnando.linter",
+				// Misc
+				"tonybaloney.vscode-pets"
+			]
+		}
+	}
+
+	// Uncomment to connect as root instead. More info: https://aka.ms/dev-containers-non-root.
+	// "remoteUser": "root"
+}
