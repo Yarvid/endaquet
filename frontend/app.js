@@ -3,6 +3,8 @@ document.addEventListener('DOMContentLoaded', function() {
     const productForm = document.getElementById('productForm');
     const productNameInput = document.getElementById('productName');
     const productPriceInput = document.getElementById('productPrice');
+    const calculateCombinationButton = document.getElementById('calculateCombination')
+    const productCombList = document.getElementById('productCombList')
 
     fetchProducts();
 
@@ -11,6 +13,11 @@ document.addEventListener('DOMContentLoaded', function() {
         addProduct(productNameInput.value, productPriceInput.value);
         productNameInput.value = '';
         productPriceInput.value = '';
+    });
+
+    calculateCombinationButton.addEventListener('click', function(e) {
+        const number = parseFloat(document.getElementById('inputSum').value);
+        fetchProductsForCombinations(number);
     });
 
     function fetchProducts() {
@@ -49,5 +56,22 @@ document.addEventListener('DOMContentLoaded', function() {
             li.appendChild(removeButton);
             productList.appendChild(li);
         });
-    }    
+    }
+
+    function renderProductCombination(products) {
+        productCombList.innerHTML = '';
+        Object.entries(products).forEach(([name, details], index) => {
+            const li = document.createElement('li');
+            li.textContent = `${details.amount}x ${name} - €${details.price.toFixed(2)}`;
+            
+            productCombList.appendChild(li);
+        });
+    }
+
+    function fetchProductsForCombinations(number) {
+        fetch(`http://localhost:5000/combination?sum=${number}`)
+            .then(response => response.json())
+            .then(data => renderProductCombination(data))
+            .catch(error => console.error('Error fetching products:', error));
+    }
 });
