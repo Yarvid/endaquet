@@ -4,11 +4,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const productNameInput = document.getElementById('productName');
     const productPriceInput = document.getElementById('productPrice');
 
-    // Load existing products (if stored)
-    const storedProducts = localStorage.getItem('products');
-    const products = storedProducts ? JSON.parse(storedProducts) : [];
-
-    renderProducts();
+    fetchProducts();
 
     productForm.addEventListener('submit', function(e) {
         e.preventDefault();
@@ -17,32 +13,41 @@ document.addEventListener('DOMContentLoaded', function() {
         productPriceInput.value = '';
     });
 
+    function fetchProducts() {
+        fetch('http://localhost:5000/products')
+            .then(response => response.json())
+            .then(data => renderProducts(data))
+            .catch(error => console.error('Error fetching products:', error));
+    }
+
     function addProduct(name, price) {
-        products.push({ name: name, price: parseFloat(price) });
-        saveProducts();
-        renderProducts();
+        fetch('http://localhost:5000/products', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ name: name, price: parseFloat(price) }),
+        })
+        .then(() => fetchProducts())
+        .catch(error => console.error('Error adding product:', error));
     }
 
     function removeProduct(index) {
-        products.splice(index, 1);
-        saveProducts();
-        renderProducts();
+        fetch(`http://localhost:5000/product/${index}`, { method: 'DELETE' })
+        .then(() => fetchProducts())
+        .catch(error => console.error('Error removing product:', error));
     }
 
-    function saveProducts() {
-        localStorage.setItem('products', JSON.stringify(products));
-    }
-
-    function renderProducts() {
+    function renderProducts(products) {
         productList.innerHTML = '';
-        products.forEach((product, index) => {
+        Object.entries(products).forEach(([name, price], index) => {
             const li = document.createElement('li');
-            li.textContent = `${product.name} - €${product.price.toFixed(2)}`;
+            li.textContent = `${name} - €${price.toFixed(2)}`;
             const removeButton = document.createElement('button');
             removeButton.textContent = 'Remove';
             removeButton.addEventListener('click', () => removeProduct(index));
             li.appendChild(removeButton);
             productList.appendChild(li);
         });
-    }
+    }    
 });

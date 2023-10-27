@@ -9,7 +9,7 @@ RUN apt-get update && apt-get install -y \
     && rm -rf /var/lib/apt/lists/*
 
 # Set the working directory to /workspace
-WORKDIR /workspace
+WORKDIR /workspaces
 
 # Create a non-root user to run our application
 RUN useradd -m vscode
