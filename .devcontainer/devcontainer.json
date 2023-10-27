@@ -5,17 +5,14 @@
 	// Or use a Dockerfile or Docker Compose file. More info: https://containers.dev/guide/dockerfile
 	//"image": "mcr.microsoft.com/devcontainers/universal:2-linux",
 	"build": { "dockerfile": "dev.dockerfile" },
-	// Features to add to the dev container. More info: https://containers.dev/features.
+	"runArgs": [
+        "-p", "5000:5000"
+    ],
 	"features": {},
-	// Use 'forwardPorts' to make a list of ports inside the container available locally.
-	// "forwardPorts": [],
-
-	// Use 'postCreateCommand' to run commands after the container is created.
+	"forwardPorts": [5000],
 	"postCreateCommand": [
-		//"python -m pip install -r /workspaces/nimloth/backend/requirements.txt"
+		//"pip install -r requirements.txt",
 	],
-
-	// Configure tool-specific properties.
 	"customizations": {
 		"vscode": {
 			"extensions": [
@@ -33,12 +30,17 @@
 				"esbenp.prettier-vscode",
 				"ionutvmi.path-autocomplete",
 				"fnando.linter",
+				"ritwickdey.liveserver",
 				// Misc
 				"tonybaloney.vscode-pets"
-			]
+			],
+			"settings": {
+				"terminal.integrated.shell.linux": "/bin/bash",
+				"python.pythonPath": "/usr/local/bin/python",
+				"python.linting.pylintEnabled": true,
+				"python.linting.enabled": true
+			},
 		}
-	}
-
-	// Uncomment to connect as root instead. More info: https://aka.ms/dev-containers-non-root.
-	// "remoteUser": "root"
+	},
+	"remoteUser": "vscode"
 }
