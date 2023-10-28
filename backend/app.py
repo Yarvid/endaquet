@@ -9,7 +9,7 @@ import os
 app = Flask(__name__)
 CORS(app)
 
-DATA_FILE = "backend/products.json"
+DATA_FILE = "products.json"
 
 @app.route('/products', methods=['GET'])
 def get_products():
